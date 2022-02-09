@@ -1,0 +1,16 @@
+{
+  "name": "aws-nodejs",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "truong",
+  "license": "MIT",
+  "scripts": {
+    "dev": "sls offline start",
+    "dynamodb:start": "sls dynamodb start --port 8002"
+  },
+  "dependencies": {
+    "serverless-dynamodb-local": "0.2.35",
+    "serverless-offline": "^8.4.0",
+    "uuid": "^8.3.2"
+  }
+}

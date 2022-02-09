@@ -1,0 +1,55 @@
+frameworkVersion: '3'
+
+service: node-serverless-lambda
+
+custom:
+  dynamodb:
+    start:
+      port: 8000
+      migrate: true # please create the tables
+      inMemory: true
+      onStart: true
+
+provider:
+  name: aws
+  runtime: nodejs14.x
+  region: ap-south-1
+
+plugins:
+  - serverless-offline
+  - serverless-dynamodb-local
+
+functions:
+  hello:
+    handler: handler.hello
+  jobs:
+    handler: src/jobs/handler.handle
+  listJobs:
+    handler: src/jobs/list.handle
+    events:
+      - http:
+          method: GET 
+          path: jobs
+  createJob:
+    handler: src/jobs/create.handle
+    events:
+      - http:
+          method: POST 
+          path: jobs
+
+resources:
+  Resources:
+    JobsDynamoDBTable:
+      Type: "AWS::DynamoDB::Table"
+      Properties:
+        TableName: "sls-api-jobs"
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+          
