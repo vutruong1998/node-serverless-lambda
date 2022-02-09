@@ -1,10 +1,5 @@
-const AWS = require('aws-sdk')
 const uuid = require('uuid')
-
-const dynamoDB = new AWS.DynamoDB.DocumentClient({
-    region: 'localhost',
-    endpoint: 'http://localhost:8000'
-})
+const dynamoDB = require('../dynamodb')
 
 module.exports.handle = async (event, ctx) => {
     const data = JSON.parse(event.body)
@@ -12,7 +7,7 @@ module.exports.handle = async (event, ctx) => {
     console.log(data)
 
     const params = {
-        TableName: 'sls-api-jobs',
+        TableName: process.env.JOBS_TABLE,
         Item: {
             id: uuid.v1(),
             title: data.title,
@@ -22,8 +17,7 @@ module.exports.handle = async (event, ctx) => {
         }
     }
     try {
-        const newJob = await dynamoDB.put(params).promise()
-        console.log(newJob)
+        await dynamoDB.put(params).promise()
         return {
             statusCode: 200,
             body: JSON.stringify(params.Item)

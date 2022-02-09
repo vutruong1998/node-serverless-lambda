@@ -1,15 +1,19 @@
 const dynamoDB = require('../dynamodb')
 
 module.exports.handle = async (event, ctx) => {
+    const id = event.pathParameters.id
     try {
-        const results = await dynamoDB
-            .scan({
-                TableName: process.env.JOBS_TABLE
+        const result = await dynamoDB
+            .get({
+                TableName: process.env.JOBS_TABLE,
+                Key: {
+                    id
+                }
             })
             .promise()
         return {
             statusCode: 200,
-            body: JSON.stringify(results)
+            body: JSON.stringify(result)
         }
     } catch (error) {
         return {
