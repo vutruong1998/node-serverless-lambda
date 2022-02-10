@@ -1,0 +1,12 @@
+getProfile:
+  handler: src/profiles/index.index
+  events:
+    - http:
+        method: GET
+        path: profiles
+createProfile:
+  handler: src/profiles/index.create
+  events:
+    - http:
+        method: POST
+        path: profiles

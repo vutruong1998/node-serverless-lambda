@@ -1,0 +1,22 @@
+listJobs:
+  handler: src/jobs/index.index
+  events:
+    - http:
+        method: GET
+        path: jobs
+createJob:
+  handler: src/jobs/index.create
+  events:
+    - http:
+        method: POST
+        path: jobs
+getJob:
+  handler: src/jobs/index.findOne
+  events:
+    - http:
+        method: GET
+        path: jobs/{id}
+        request:
+          parameters:
+            paths:
+              id: true
