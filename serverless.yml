@@ -3,7 +3,7 @@ service: node-serverless-lambda
 custom:
   dynamodb:
     start:
-      port: 8002
+      port: 8000
       migrate: true
       inMemory: true
       onStart: true
@@ -14,7 +14,7 @@ provider:
   region: ap-south-1
   environment:
     REGION: localhost
-    ENDPOINT: http://localhost:8002
+    ENDPOINT: http://localhost:8000
     JOBS_TABLE: ${self:service}-jobs
     DEFAULT_ACCESS_KEY: default_access_key
     DEFAULT_SECRET: default_secret
@@ -28,6 +28,10 @@ functions:
   #   handler: handler.hello
   # jobs:
   #   handler: src/jobs/handler.handle
+  #   events:
+  #     - http:
+  #         method: POST
+  #         path: jobs
   - ${file(router/jobs.yml)}
   - ${file(router/profiles.yml)}
 

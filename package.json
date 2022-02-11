@@ -10,6 +10,10 @@
     "dynamodb:start": "sls dynamodb start --port 8002"
   },
   "dependencies": {
+    "@middy/core": "^2.5.7",
+    "@middy/http-error-handler": "^2.5.7",
+    "@middy/http-json-body-parser": "^2.5.7",
+    "@middy/validator": "^2.5.7",
     "serverless-dynamodb-local": "0.2.35",
     "serverless-offline": "^8.4.0",
     "uuid": "^8.3.2"
