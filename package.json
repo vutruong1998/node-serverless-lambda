@@ -6,7 +6,7 @@
   "author": "truong",
   "license": "MIT",
   "scripts": {
-    "dev": "sls offline start",
+    "serve": "sls offline --config serverless-offline.yml start",
     "dynamodb:start": "sls dynamodb start --port 8002"
   },
   "dependencies": {

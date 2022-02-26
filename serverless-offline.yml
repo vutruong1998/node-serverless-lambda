@@ -1,0 +1,47 @@
+service: node-serverless-lambda
+
+custom:
+  dynamodb:
+    stages:
+      - offline
+    start:
+      host: localhost # localhost or the name of your Dynamo docker container
+      port: 8000 # the port of our Dynamo docker container
+      noStart: true
+      migrate: true
+
+provider:
+  name: aws
+  runtime: nodejs14.x
+  region: ap-south-1
+  stage: offline
+  environment:
+    REGION: localhost
+    ENDPOINT: http://localhost:8000
+    JOBS_TABLE: ${self:service}-jobs
+    DEFAULT_ACCESS_KEY: default_access_key
+    DEFAULT_SECRET: default_secret
+
+plugins:
+  - serverless-dynamodb-local
+  - serverless-offline
+
+functions:
+  - ${file(router/jobs.yml)}
+  - ${file(router/profiles.yml)}
+
+resources:
+  Resources:
+    JobsDynamoDBTable:
+      Type: "AWS::DynamoDB::Table"
+      Properties:
+        TableName: ${self:service}-jobs
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
